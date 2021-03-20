@@ -1,0 +1,24 @@
+{
+  "name": "block",
+  "version": "0.0.1",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Its-Just-Nans/block.git"
+  },
+  "keywords": [],
+  "author": "Its-Just-Nans",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Its-Just-Nans/block/issues"
+  },
+  "homepage": "https://github.com/Its-Just-Nans/block#readme",
+  "devDependencies": {
+    "electron": "^12.0.1"
+  }
+}
