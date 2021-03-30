@@ -18,7 +18,7 @@ contextBridge.exposeInMainWorld("api", {
         // whitelist channels
         let validChannels = ["toMain"];
         if (validChannels.includes(channel)) {
-            ipcRenderer.send(channel, data);
+            return ipcRenderer.send(channel, data);
         }
     },
     receive: (channel, func) => {

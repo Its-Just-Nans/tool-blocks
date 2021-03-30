@@ -15,16 +15,6 @@ function createWindow() {
         },
     });
     win.loadFile("index.html");
-    win2 = new BrowserWindow({
-        width: 800,
-        height: 600,
-        webPreferences: {
-            preload: path.join(__dirname, "preload.js"),
-            nodeIntegration: false,
-            contextIsolation: true,
-        },
-    });
-    win2.loadFile("index.html");
 }
 
 app.whenReady().then(() => {
@@ -42,6 +32,20 @@ app.on("window-all-closed", () => {
     }
 });
 
+const exec = require("child_process").exec;
+
+function execute(command, callback) {
+    exec(command, (error, stdout, stderr) => {
+        debugger;
+        callback(stdout);
+    });
+}
+
+// call the function
+
 ipcMain.on("toMain", (event, args) => {
-    win.loadFile(args);
+    execute(args, (output) => {
+        console.log(output.toString("utf8"));
+        return "lol";
+    });
 });

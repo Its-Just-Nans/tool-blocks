@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Its-Just-Nans/block#readme",
   "devDependencies": {
-    "electron": "^12.0.1"
+    "electron": "^12.0.1",
+    "xterm": "^4.11.0"
   }
 }
