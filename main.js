@@ -1,7 +1,18 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 
-let win2;
+const appFolder = path.dirname(process.execPath);
+const appFolder2 = path.dirname("main.js");
+const updateExe = path.resolve(appFolder, "..", "Update.exe");
+const exeName = path.basename(process.execPath);
+const appLink = path.resolve(appFolder, "..", "block.exe");
+
+console.log(path.resolve(`${path.dirname(process.mainModule.filename)}/package`, "block.exe"));
+console.log("-------");
+console.log(updateExe);
+console.log("-------");
+console.log(exeName);
+
 let win;
 
 function createWindow() {
@@ -16,6 +27,12 @@ function createWindow() {
     });
     win.loadFile("index.html");
 }
+
+app.setLoginItemSettings({
+    openAtLogin: true,
+    ath: app.getPath("exe"),
+});
+console.log(app.getLoginItemSettings());
 
 app.whenReady().then(() => {
     createWindow();

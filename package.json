@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-packager . block --overwrite --out=package"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,10 @@
   "homepage": "https://github.com/Its-Just-Nans/block#readme",
   "devDependencies": {
     "electron": "^12.0.1",
+    "electron-installer-windows": "^3.0.0",
+    "electron-packager": "^15.2.0",
+    "electron-winstaller": "^5.0.0",
     "xterm": "^4.11.0"
-  }
+  },
+  "productName": "Block"
 }
