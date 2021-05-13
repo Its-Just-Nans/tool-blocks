@@ -5,7 +5,7 @@ const { contextBridge } = require("electron");
 (async () => {
     let allMenu = [];
 
-    const blocksPath = path.join(__dirname, "pages/blocks");
+    const blocksPath = path.join(__dirname, "./blocks");
 
     let files = fs.readdirSync(blocksPath);
     if (typeof files === "undefined" || files === null) {
