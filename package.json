@@ -1,30 +1,29 @@
 {
-  "name": "block",
+  "name": "tool-blocks",
   "version": "0.0.1",
   "description": "",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "build": "electron-packager . block --overwrite --out=package"
+    "build": "electron-packager . tool-blocks --overwrite --out=package"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Its-Just-Nans/block.git"
+    "url": "git+https://github.com/Its-Just-Nans/tool-blocks.git"
   },
   "keywords": [],
   "author": "Its-Just-Nans",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Its-Just-Nans/block/issues"
+    "url": "https://github.com/Its-Just-Nans/tool-blocks/issues"
   },
-  "homepage": "https://github.com/Its-Just-Nans/block#readme",
+  "homepage": "https://github.com/Its-Just-Nans/tool-blocks#readme",
   "devDependencies": {
     "electron": "^12.0.1",
     "electron-installer-windows": "^3.0.0",
     "electron-packager": "^15.2.0",
     "electron-winstaller": "^5.0.0",
-    "xterm": "^4.11.0"
   },
-  "productName": "Block"
+  "productName": "tool-blocks"
 }
