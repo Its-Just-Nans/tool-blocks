@@ -1,7 +1,7 @@
 <script>
     let titleName = "lol";
     let srcIframe = "./blocks/test/index.html";
-    console.log(window.api.getMenus());
+    const allMenus = window.api.getMenus();
 
     function getRandomColor() {
         var letters = "0123456789ABCDEF";
@@ -12,10 +12,44 @@
         return color;
     }
     let color = getRandomColor();
+
+    function changeMenu(index) {
+        const menu = allMenus[index];
+        const preloadLink = allMenus[index].preload;
+        const newIframeSrc = allMenus[index].src;
+        const ifrmElement = document.getElementById("iframe");
+        let iframeWindow = ifrmElement.contentWindow;
+        setTimeout(() => {
+            const prealoadRequire = window.api.getBlock(preloadLink || "") || {};
+            iframeWindow.block = prealoadRequire;
+            iframeWindow.kk = { a: "notB" };
+        }, 11);
+        srcIframe = newIframeSrc;
+    }
+    window.addEventListener("DOMContentLoaded", () => {
+        const indexStartMenu = allMenus.findIndex((element) => {
+            return element.name == "test";
+        });
+        changeMenu(indexStartMenu);
+    });
 </script>
 
-<nav style="--globalColor: {color}" />
-<iframe style="--globalColor: {color}" title={titleName} src={srcIframe} />
+<nav style="--globalColor: {color}">
+    {#each allMenus as { name }, index}
+        <div>
+            <p
+                on:click={() => {
+                    changeMenu(index);
+                }}
+            >
+                {name}
+            </p>
+        </div>
+    {/each}
+</nav>
+{#if srcIframe != ""}
+    <iframe id="iframe" style="--globalColor: {color}" title={titleName} src={srcIframe} />
+{/if}
 
 <style>
     * {

@@ -16,27 +16,34 @@ const { contextBridge } = require("electron");
         let newMenu = {};
         const dirPath = path.join(blocksPath, oneFile);
         if (fs.existsSync(dirPath) && fs.lstatSync(dirPath).isDirectory()) {
-            newMenu.name = oneFile;
+            newMenu.name = oneFile; // search in package json
             // looking for preload
             const preloadPath = path.join(dirPath, "preload.js");
             if (fs.existsSync(preloadPath)) {
-                newMenu.preloadPath = preloadPath;
+                newMenu.preload = preloadPath;
+            }
+            const src = path.join(dirPath, "index.html");
+            if (fs.existsSync(src)) {
+                newMenu.src = src;
             }
         }
         allMenu.push(newMenu);
     }
 
-    const loadPreload = function (preloadPath) {
-        const { start } = require(path.join(__dirname, preloadPath));
-        start();
-    };
-
     contextBridge.exposeInMainWorld("api", {
         getMenus: () => {
             return allMenu;
         },
-        load: (preloadPath) => {
-            loadPreload(preloadPath);
+        getBlock: (preloadPath) => {
+            if (preloadPath != "") {
+                if (!path.isAbsolute(preloadPath)) {
+                    preloadPath = path.resolve(__dirname, preloadPath);
+                }
+                const preloadBlock = require(preloadPath);
+                return preloadBlock || {};
+            } else {
+                return {};
+            }
         },
     });
 })();

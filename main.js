@@ -18,7 +18,7 @@ function createWindow() {
 
 app.setLoginItemSettings({
     openAtLogin: true,
-    ath: app.getPath("exe"),
+    path: app.getPath("exe"),
 });
 
 app.whenReady().then(() => {
