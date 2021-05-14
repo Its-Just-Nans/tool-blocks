@@ -19,12 +19,11 @@
         const newIframeSrc = allMenus[index].src;
         const ifrmElement = document.getElementById("iframe");
         let iframeWindow = ifrmElement.contentWindow;
-        setTimeout(() => {
-            const prealoadRequire = window.api.getBlock(preloadLink || "") || {};
-            iframeWindow.block = prealoadRequire;
-            iframeWindow.kk = { a: "notB" };
-        }, 11);
         srcIframe = newIframeSrc;
+        const prealoadRequire = window.api.getBlock(preloadLink || "") || {};
+        setTimeout(() => {
+            iframeWindow.block = prealoadRequire;
+        }, 5);
     }
     window.addEventListener("DOMContentLoaded", () => {
         const indexStartMenu = allMenus.findIndex((element) => {
@@ -47,9 +46,7 @@
         </div>
     {/each}
 </nav>
-{#if srcIframe != ""}
-    <iframe id="iframe" style="--globalColor: {color}" title={titleName} src={srcIframe} />
-{/if}
+<iframe id="iframe" style="--globalColor: {color}" title={titleName} src={srcIframe} />
 
 <style>
     * {

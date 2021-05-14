@@ -16,15 +16,40 @@ const { contextBridge } = require("electron");
         let newMenu = {};
         const dirPath = path.join(blocksPath, oneFile);
         if (fs.existsSync(dirPath) && fs.lstatSync(dirPath).isDirectory()) {
-            newMenu.name = oneFile; // search in package json
-            // looking for preload
-            const preloadPath = path.join(dirPath, "preload.js");
-            if (fs.existsSync(preloadPath)) {
-                newMenu.preload = preloadPath;
-            }
-            const src = path.join(dirPath, "index.html");
-            if (fs.existsSync(src)) {
-                newMenu.src = src;
+            const linkToJSONPkg = path.join(dirPath, "package.json");
+            if (fs.existsSync(linkToJSONPkg)) {
+                try {
+                    const file = fs.readFileSync(linkToJSONPkg);
+                    const { block } = JSON.parse(file.toString());
+                    newMenu.name = block.menu || oneFile;
+                    if (typeof block.preload !== "undefined" && block.preload != "") {
+                        newMenu.preload = path.join(dirPath, block.preload) || "";
+                    } else {
+                        newMenu.preload = "";
+                    }
+                    if (typeof block.main !== "undefined" && block.main != "") {
+                        newMenu.src = path.join(dirPath, block.main) || "index.html";
+                    } else {
+                        newMenu.src = "index.html";
+                    }
+                } catch (error) {
+                    //error with parsing
+                    console.error(error);
+                    newMenu.name = oneFile;
+                    newMenu.preload = "";
+                    newMenu.src = "index.html";
+                }
+            } else {
+                newMenu.name = oneFile; // search in package json
+                // looking for preload
+                const preloadPath = path.join(dirPath, "preload.js");
+                if (fs.existsSync(preloadPath)) {
+                    newMenu.preload = preloadPath;
+                }
+                const src = path.join(dirPath, "index.html");
+                if (fs.existsSync(src)) {
+                    newMenu.src = src;
+                }
             }
         }
         allMenu.push(newMenu);
