@@ -1,4 +1,17 @@
 <svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">
+    <title>Tool blocks logo</title>
+    <desc>Logo of the tool-blocks project</desc>
+    <metadata>
+        <rdf:RDF xmlns:rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" >
+            <rdf:Description dc:title="tool blocks logo">
+                <dc:creator>
+                    <rdf:Bag>
+                        <rdf:li>Its-Just-Nans - n4n5</rdf:li>
+                    </rdf:Bag>
+                </dc:creator>
+            </rdf:Description>
+        </rdf:RDF>
+    </metadata>
         <g transform="matrix(0.5,0,0,0.5,303,144)">
         <polyline points="78,104 243,80 338,131  172,155" fill="#ddbb8b" stroke="#ddbb8b" stroke-width="0" />
         <polyline points="172,338 338,313 338,131 172,155" fill="#cba16f" stroke="#cba16f" stroke-width="0" />

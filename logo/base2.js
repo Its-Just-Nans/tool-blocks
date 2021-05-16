@@ -27,22 +27,9 @@ const svg = `<polyline points="${a1} 243,80 ${a3}  ${a4}" fill="#ddbb8b" stroke=
         <path fill="${colorFront}" d="M6,1v5h2V5h2V1H6z M9,4H8V2h1V4z"/>
         <polygon fill="${colorFront}" points="11,1 11,5 13,5 13,2 14,2 14,5 15,5 15,2 16,2 16,5 17,5 17,1 "/>
     </g>`;
-exports.svg1 = `    <g transform="matrix(0.5,0,0,0.5,303,144)">
-        ${svg}
-        <text transform="${matrice2}" x="300" y="358" font-size="7" font-family="monospace" >JS inside</text>
-        ${blockText}block 2</text>
-    </g>
-    <g transform="matrix(1,0,0,1,50,0)">
+exports.svg2 = `    <g transform="matrix(1.75,0,0,1.75,-120,-120)">
         ${svg}
         <text transform="matrix(1,-0.145,0,1,0,0)" x="300" y="357" font-size="7" font-family="monospace" >JS inside</text>
         <text transform="matrix(1,-0.13,0,1,0,0)" x="180" y="190" font-size="7" font-family="monospace">tool-blocks</text>
         <text transform="matrix(1,-0.13,0,1,0,0)" x="300" y="187" font-size="7" font-family="monospace">block 1</text>
-    </g>
-    <g transform="matrix(0.5,0,0,0.5,5,156)">
-        ${svg}
-    </g>
-    <g transform="matrix(0.5,0,0,0.5,52,181.5)">
-        ${svg}
-        <text transform="${matrice2}" x="300" y="358" font-size="7" font-family="monospace" >JS inside</text>
-        ${blockText}block 3</text>
     </g>`;
