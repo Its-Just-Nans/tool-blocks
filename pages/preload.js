@@ -54,7 +54,15 @@ const { contextBridge } = require("electron");
         }
         allMenu.push(newMenu);
     }
-
+    const getRandomColor = function () {
+        var letters = "0123456789ABCDEF";
+        var color = "#";
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    };
+    const color = getRandomColor();
     contextBridge.exposeInMainWorld("api", {
         getMenus: () => {
             return allMenu;
@@ -69,6 +77,9 @@ const { contextBridge } = require("electron");
             } else {
                 return {};
             }
+        },
+        getColor: () => {
+            return color;
         },
     });
 })();

@@ -2,17 +2,8 @@
     let titleName = "lol";
     let srcIframe = "./blocks/test/index.html";
     const allMenus = window.api.getMenus();
-
-    function getRandomColor() {
-        var letters = "0123456789ABCDEF";
-        var color = "#";
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
-    let color = getRandomColor();
-
+    let color = window.api.getColor();
+    let displayMenu = allMenus;
     function changeMenu(index) {
         const menu = allMenus[index];
         const preloadLink = allMenus[index].preload;
@@ -23,6 +14,7 @@
         const prealoadRequire = window.api.getBlock(preloadLink || "") || {};
         setTimeout(() => {
             iframeWindow.block = prealoadRequire;
+            iframeWindow.global = window.api;
         }, 5);
     }
     window.addEventListener("DOMContentLoaded", () => {
@@ -31,30 +23,79 @@
         });
         changeMenu(indexStartMenu);
     });
+    function search(event) {
+        const value = event.target.value;
+        displayMenu = allMenus.filter((element) => {
+            if (element.name.startsWith(value)) {
+                return true;
+            }
+            return false;
+        });
+    }
 </script>
 
 <nav style="--globalColor: {color}">
-    {#each allMenus as { name }, index}
-        <div>
-            <p
+    <div class="inputDiv">
+        <input on:input={search} placeholder="find" />
+    </div>
+    {#each displayMenu as { name }, index}
+        <div class="oneMenu">
+            <h4
                 on:click={() => {
                     changeMenu(index);
                 }}
             >
                 {name}
-            </p>
+            </h4>
         </div>
     {/each}
 </nav>
 <iframe id="iframe" style="--globalColor: {color}" title={titleName} src={srcIframe} />
 
 <style>
-    * {
+    :global(*) {
         box-sizing: border-box;
         --NavBarWidth: 35vh;
         --NavBarWidthMin: 275px;
+        font-family: monospace;
+        font-size: 1.02em;
+    }
+    .inputDiv {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        border-bottom: 1px solid var(--globalColor);
+    }
+    .inputDiv input {
+        cursor: pointer;
+        border: 0px;
+        font-size: 1.2em;
+    }
+    .inputDiv input:focus {
+        outline: 0px;
+    }
+
+    .oneMenu {
+        box-sizing: border-box;
+        font-size: 1.1em;
+        margin: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        border: 1px solid var(--globalColor);
+        text-align: left;
+    }
+    .oneMenu:hover {
+        transition: 0.25s;
+        box-shadow: 0px 0px 0px 3px var(--globalColor);
+    }
+    nav > div > h4 {
+        padding: 10px;
+        margin: 0px;
     }
     nav {
+        padding: 0px;
+        border-bottom: 1px solid var(--globalColor);
+        width: inherit;
         overflow-y: auto;
     }
     nav::-webkit-scrollbar {

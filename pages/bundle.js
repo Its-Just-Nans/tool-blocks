@@ -1,5 +1,3 @@
-
-(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
 var app = (function () {
     'use strict';
 
@@ -308,6 +306,13 @@ var app = (function () {
         else
             dispatch_dev('SvelteDOMSetAttribute', { node, attribute, value });
     }
+    function set_data_dev(text, data) {
+        data = '' + data;
+        if (text.wholeText === data)
+            return;
+        dispatch_dev('SvelteDOMSetData', { node: text, data });
+        text.data = data;
+    }
     function validate_each_argument(arg) {
         if (typeof arg !== 'string' && !(arg && typeof arg === 'object' && 'length' in arg)) {
             let msg = '{#each} only iterates over array-like objects.';
@@ -350,49 +355,50 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[6] = list[i].name;
-    	child_ctx[8] = i;
+    	child_ctx[8] = list[i].name;
+    	child_ctx[10] = i;
     	return child_ctx;
     }
 
-    // (37:4) {#each allMenus as { name }
+    // (41:4) {#each displayMenu as { name }
     function create_each_block(ctx) {
     	let div;
-    	let p;
-    	let t0_value = /*name*/ ctx[6] + "";
+    	let h4;
+    	let t0_value = /*name*/ ctx[8] + "";
     	let t0;
     	let t1;
     	let mounted;
     	let dispose;
 
     	function click_handler() {
-    		return /*click_handler*/ ctx[5](/*index*/ ctx[8]);
+    		return /*click_handler*/ ctx[6](/*index*/ ctx[10]);
     	}
 
     	const block = {
     		c: function create() {
     			div = element("div");
-    			p = element("p");
+    			h4 = element("h4");
     			t0 = text(t0_value);
     			t1 = space();
-    			attr_dev(p, "class", "svelte-k6ktzq");
-    			add_location(p, file, 38, 12, 1236);
-    			attr_dev(div, "class", "svelte-k6ktzq");
-    			add_location(div, file, 37, 8, 1218);
+    			attr_dev(h4, "class", "svelte-1e2y990");
+    			add_location(h4, file, 42, 12, 1453);
+    			attr_dev(div, "class", "oneMenu svelte-1e2y990");
+    			add_location(div, file, 41, 8, 1419);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
-    			append_dev(div, p);
-    			append_dev(p, t0);
+    			append_dev(div, h4);
+    			append_dev(h4, t0);
     			append_dev(div, t1);
 
     			if (!mounted) {
-    				dispose = listen_dev(p, "click", click_handler, false, false, false);
+    				dispose = listen_dev(h4, "click", click_handler, false, false, false);
     				mounted = true;
     			}
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
+    			if (dirty & /*displayMenu*/ 2 && t0_value !== (t0_value = /*name*/ ctx[8] + "")) set_data_dev(t0, t0_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
@@ -405,7 +411,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(37:4) {#each allMenus as { name }",
+    		source: "(41:4) {#each displayMenu as { name }",
     		ctx
     	});
 
@@ -414,10 +420,15 @@ var app = (function () {
 
     function create_fragment(ctx) {
     	let nav;
-    	let t;
+    	let div;
+    	let input;
+    	let t0;
+    	let t1;
     	let iframe;
     	let iframe_src_value;
-    	let each_value = /*allMenus*/ ctx[2];
+    	let mounted;
+    	let dispose;
+    	let each_value = /*displayMenu*/ ctx[1];
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -428,39 +439,55 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			nav = element("nav");
+    			div = element("div");
+    			input = element("input");
+    			t0 = space();
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			t = space();
+    			t1 = space();
     			iframe = element("iframe");
+    			attr_dev(input, "placeholder", "find");
+    			attr_dev(input, "class", "svelte-1e2y990");
+    			add_location(input, file, 38, 8, 1310);
+    			attr_dev(div, "class", "inputDiv svelte-1e2y990");
+    			add_location(div, file, 37, 4, 1279);
     			set_style(nav, "--globalColor", /*color*/ ctx[3]);
-    			attr_dev(nav, "class", "svelte-k6ktzq");
-    			add_location(nav, file, 35, 0, 1133);
+    			attr_dev(nav, "class", "svelte-1e2y990");
+    			add_location(nav, file, 36, 0, 1238);
     			attr_dev(iframe, "id", "iframe");
     			set_style(iframe, "--globalColor", /*color*/ ctx[3]);
-    			attr_dev(iframe, "title", /*titleName*/ ctx[1]);
+    			attr_dev(iframe, "title", /*titleName*/ ctx[2]);
     			if (iframe.src !== (iframe_src_value = /*srcIframe*/ ctx[0])) attr_dev(iframe, "src", iframe_src_value);
-    			attr_dev(iframe, "class", "svelte-k6ktzq");
-    			add_location(iframe, file, 48, 0, 1419);
+    			attr_dev(iframe, "class", "svelte-1e2y990");
+    			add_location(iframe, file, 52, 0, 1638);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, nav, anchor);
+    			append_dev(nav, div);
+    			append_dev(div, input);
+    			append_dev(nav, t0);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(nav, null);
     			}
 
-    			insert_dev(target, t, anchor);
+    			insert_dev(target, t1, anchor);
     			insert_dev(target, iframe, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(input, "input", /*search*/ ctx[5], false, false, false);
+    				mounted = true;
+    			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*changeMenu, allMenus*/ 20) {
-    				each_value = /*allMenus*/ ctx[2];
+    			if (dirty & /*changeMenu, displayMenu*/ 18) {
+    				each_value = /*displayMenu*/ ctx[1];
     				validate_each_argument(each_value);
     				let i;
 
@@ -492,8 +519,10 @@ var app = (function () {
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(nav);
     			destroy_each(each_blocks, detaching);
-    			if (detaching) detach_dev(t);
+    			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(iframe);
+    			mounted = false;
+    			dispose();
     		}
     	};
 
@@ -508,24 +537,14 @@ var app = (function () {
     	return block;
     }
 
-    function getRandomColor() {
-    	var letters = "0123456789ABCDEF";
-    	var color = "#";
-
-    	for (var i = 0; i < 6; i++) {
-    		color += letters[Math.floor(Math.random() * 16)];
-    	}
-
-    	return color;
-    }
-
     function instance($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("App", slots, []);
     	let titleName = "lol";
     	let srcIframe = "./blocks/test/index.html";
     	const allMenus = window.api.getMenus();
-    	let color = getRandomColor();
+    	let color = window.api.getColor();
+    	let displayMenu = allMenus;
 
     	function changeMenu(index) {
     		allMenus[index];
@@ -539,6 +558,7 @@ var app = (function () {
     		setTimeout(
     			() => {
     				iframeWindow.block = prealoadRequire;
+    				iframeWindow.global = window.api;
     			},
     			5
     		);
@@ -551,6 +571,18 @@ var app = (function () {
 
     		changeMenu(indexStartMenu);
     	});
+
+    	function search(event) {
+    		const value = event.target.value;
+
+    		$$invalidate(1, displayMenu = allMenus.filter(element => {
+    			if (element.name.startsWith(value)) {
+    				return true;
+    			}
+
+    			return false;
+    		}));
+    	}
 
     	const writable_props = [];
 
@@ -566,22 +598,24 @@ var app = (function () {
     		titleName,
     		srcIframe,
     		allMenus,
-    		getRandomColor,
     		color,
-    		changeMenu
+    		displayMenu,
+    		changeMenu,
+    		search
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ("titleName" in $$props) $$invalidate(1, titleName = $$props.titleName);
+    		if ("titleName" in $$props) $$invalidate(2, titleName = $$props.titleName);
     		if ("srcIframe" in $$props) $$invalidate(0, srcIframe = $$props.srcIframe);
     		if ("color" in $$props) $$invalidate(3, color = $$props.color);
+    		if ("displayMenu" in $$props) $$invalidate(1, displayMenu = $$props.displayMenu);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [srcIframe, titleName, allMenus, color, changeMenu, click_handler];
+    	return [srcIframe, displayMenu, titleName, color, changeMenu, search, click_handler];
     }
 
     class App extends SvelteComponentDev {

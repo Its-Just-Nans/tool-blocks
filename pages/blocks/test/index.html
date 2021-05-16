@@ -1,17 +1,6 @@
-<h1>Hello World:</h1>
+<h1>Hello World !</h1>
 <p></p>
 <script>
     console.log(window.block);
-    window.addEventListener("load", () => {
-        console.log("LOAD");
-        console.log(window.block);
-    });
-    setTimeout(() => {
-        console.log("TIMEOUT");
-        console.log(window.block);
-    });
-    setTimeout(() => {
-        console.log("TIMEOUT 500");
-        console.log(window.block);
-    }, 500);
+    document.getElementsByTagName("h1")[0].style.color = window.global.getColor();
 </script>

@@ -22,8 +22,11 @@
     "svelte-check": "^1.0.0",
     "svelte-preprocess": "^4.0.0"
   },
+  "dependencies": {
+    "sirv-cli": "^1.0.0"
+  },
   "block": {
-    "preload": "",
+    "preload": "preload.js",
     "main": "./public/index.html"
   }
 }
