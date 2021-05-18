@@ -1,5 +1,3 @@
-
-(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
 var app = (function () {
     'use strict';
 
@@ -449,7 +447,7 @@ var app = (function () {
     	});
 
     	const click_handler = () => {
-    		alert(window.block.osTEST());
+    		alert(window.parent.block.osTEST());
     	};
 
     	return [click_handler];
@@ -645,8 +643,8 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[4] = list[i].name;
-    	child_ctx[6] = i;
+    	child_ctx[5] = list[i].name;
+    	child_ctx[7] = i;
     	return child_ctx;
     }
 
@@ -654,7 +652,7 @@ var app = (function () {
     function create_each_block(ctx) {
     	let div;
     	let h4;
-    	let t0_value = /*name*/ ctx[4] + "";
+    	let t0_value = /*name*/ ctx[5] + "";
     	let t0;
     	let t1;
     	let div_class_value;
@@ -662,7 +660,11 @@ var app = (function () {
     	let dispose;
 
     	function click_handler() {
-    		return /*click_handler*/ ctx[3](/*index*/ ctx[6]);
+    		return /*click_handler*/ ctx[3](/*index*/ ctx[7]);
+    	}
+
+    	function keypress_handler(...args) {
+    		return /*keypress_handler*/ ctx[4](/*index*/ ctx[7], ...args);
     	}
 
     	const block = {
@@ -671,14 +673,15 @@ var app = (function () {
     			h4 = element("h4");
     			t0 = text(t0_value);
     			t1 = space();
-    			attr_dev(h4, "class", "svelte-1qifxd4");
-    			add_location(h4, file, 21, 12, 571);
+    			attr_dev(h4, "class", "svelte-hzlr73");
+    			add_location(h4, file, 32, 12, 858);
 
-    			attr_dev(div, "class", div_class_value = "" + (null_to_empty(/*index*/ ctx[6] === /*indexNav*/ ctx[1]
+    			attr_dev(div, "class", div_class_value = "" + (null_to_empty(/*index*/ ctx[7] === /*indexNav*/ ctx[1]
     			? "selectedMenu"
-    			: "") + " svelte-1qifxd4"));
+    			: "") + " svelte-hzlr73"));
 
-    			add_location(div, file, 20, 8, 504);
+    			attr_dev(div, "tabindex", /*index*/ ctx[7]);
+    			add_location(div, file, 20, 8, 508);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -687,23 +690,27 @@ var app = (function () {
     			append_dev(div, t1);
 
     			if (!mounted) {
-    				dispose = listen_dev(h4, "click", click_handler, false, false, false);
+    				dispose = [
+    					listen_dev(div, "click", click_handler, false, false, false),
+    					listen_dev(div, "keypress", keypress_handler, false, false, false)
+    				];
+
     				mounted = true;
     			}
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
 
-    			if (dirty & /*indexNav*/ 2 && div_class_value !== (div_class_value = "" + (null_to_empty(/*index*/ ctx[6] === /*indexNav*/ ctx[1]
+    			if (dirty & /*indexNav*/ 2 && div_class_value !== (div_class_value = "" + (null_to_empty(/*index*/ ctx[7] === /*indexNav*/ ctx[1]
     			? "selectedMenu"
-    			: "") + " svelte-1qifxd4"))) {
+    			: "") + " svelte-hzlr73"))) {
     				attr_dev(div, "class", div_class_value);
     			}
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
     			mounted = false;
-    			dispose();
+    			run_all(dispose);
     		}
     	};
 
@@ -754,11 +761,11 @@ var app = (function () {
     			div = element("div");
     			if (switch_instance) create_component(switch_instance.$$.fragment);
     			set_style(nav, "--globalColor", /*color*/ ctx[0]);
-    			attr_dev(nav, "class", "svelte-1qifxd4");
-    			add_location(nav, file, 18, 0, 422);
-    			attr_dev(div, "class", "settings svelte-1qifxd4");
+    			attr_dev(nav, "class", "svelte-hzlr73");
+    			add_location(nav, file, 18, 0, 426);
+    			attr_dev(div, "class", "settings svelte-hzlr73");
     			set_style(div, "--globalColor", /*color*/ ctx[0]);
-    			add_location(div, file, 31, 0, 755);
+    			add_location(div, file, 38, 0, 938);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -875,7 +882,7 @@ var app = (function () {
     	let color;
 
     	try {
-    		color = window.global.getColor() || "orange";
+    		color = window.parent.api.getColor() || "orange";
     	} catch(e) {
     		color = "brown";
     	}
@@ -889,6 +896,12 @@ var app = (function () {
 
     	const click_handler = index => {
     		$$invalidate(1, indexNav = index);
+    	};
+
+    	const keypress_handler = (index, event) => {
+    		if (event.key === "Enter") {
+    			$$invalidate(1, indexNav = index);
+    		}
     	};
 
     	$$self.$capture_state = () => ({
@@ -909,7 +922,7 @@ var app = (function () {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [color, indexNav, menus, click_handler];
+    	return [color, indexNav, menus, click_handler, keypress_handler];
     }
 
     class App extends SvelteComponentDev {

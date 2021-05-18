@@ -4,16 +4,17 @@ const path = require("path");
 const appFolder = path.dirname(process.execPath);
 
 let win;
+const linkToStartFiles = "./pages/navigation/";
 
 function createWindow() {
     win = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
-            preload: path.join(__dirname, "./pages/preload.js"),
+            preload: path.join(__dirname, `${linkToStartFiles}preload.js`),
         },
     });
-    win.loadFile("./pages/index.html");
+    win.loadFile(`${linkToStartFiles}index.html`);
 }
 
 app.setLoginItemSettings({

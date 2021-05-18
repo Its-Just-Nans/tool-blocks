@@ -7,15 +7,9 @@
     function changeMenu(index) {
         const menu = allMenus[index];
         const preloadLink = allMenus[index].preload;
-        const newIframeSrc = allMenus[index].src;
+        srcIframe = allMenus[index].src;
         const ifrmElement = document.getElementById("iframe");
-        let iframeWindow = ifrmElement.contentWindow;
-        srcIframe = newIframeSrc;
-        const prealoadRequire = window.api.getBlock(preloadLink || "") || {};
-        setTimeout(() => {
-            iframeWindow.block = prealoadRequire;
-            iframeWindow.global = window.api;
-        }, 5);
+        window.block = window.api.getBlock(preloadLink || "") || {};
     }
     window.addEventListener("DOMContentLoaded", () => {
         const indexStartMenu = allMenus.findIndex((element) => {
@@ -36,15 +30,22 @@
 
 <nav style="--globalColor: {color}">
     <div class="inputDiv">
-        <input on:input={search} placeholder="find" />
+        <input on:input={search} placeholder="find blocks" />
     </div>
     {#each displayMenu as { name }, index}
-        <div class="oneMenu">
-            <h4
-                on:click={() => {
+        <div
+            class="oneMenu"
+            on:click={() => {
+                changeMenu(index);
+            }}
+            on:keypress={(event) => {
+                if (event.key === "Enter") {
                     changeMenu(index);
-                }}
-            >
+                }
+            }}
+            tabindex={index}
+        >
+            <h4>
                 {name}
             </h4>
         </div>
@@ -62,14 +63,15 @@
     }
     .inputDiv {
         width: 100%;
-        padding: 10px;
         box-sizing: border-box;
         border-bottom: 1px solid var(--globalColor);
     }
     .inputDiv input {
         cursor: pointer;
         border: 0px;
+        padding: 10px;
         font-size: 1.2em;
+        width: 100%;
     }
     .inputDiv input:focus {
         outline: 0px;
@@ -85,6 +87,11 @@
         text-align: left;
     }
     .oneMenu:hover {
+        transition: 0.25s;
+        box-shadow: 0px 0px 0px 3px var(--globalColor);
+    }
+    .oneMenu:focus {
+        outline: none;
         transition: 0.25s;
         box-shadow: 0px 0px 0px 3px var(--globalColor);
     }

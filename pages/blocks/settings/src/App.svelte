@@ -9,7 +9,7 @@
     ];
     let color;
     try {
-        color = window.global.getColor() || "orange";
+        color = window.parent.api.getColor() || "orange";
     } catch (e) {
         color = "brown";
     }
@@ -18,12 +18,19 @@
 
 <nav style="--globalColor: {color}">
     {#each menus as { name }, index}
-        <div class={index === indexNav ? "selectedMenu" : ""}>
-            <h4
-                on:click={() => {
+        <div
+            class={index === indexNav ? "selectedMenu" : ""}
+            on:click={() => {
+                indexNav = index;
+            }}
+            on:keypress={(event) => {
+                if (event.key === "Enter") {
                     indexNav = index;
-                }}
-            >
+                }
+            }}
+            tabindex={index}
+        >
+            <h4>
                 {name}
             </h4>
         </div>
@@ -60,6 +67,11 @@
         border: 1px solid var(--globalColor);
     }
     nav > div:hover {
+        transition: 0.25s;
+        box-shadow: 0px 0px 0px 3px var(--globalColor);
+    }
+    nav > div:focus {
+        outline: none;
         transition: 0.25s;
         box-shadow: 0px 0px 0px 3px var(--globalColor);
     }

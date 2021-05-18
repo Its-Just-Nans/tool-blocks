@@ -355,23 +355,27 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[8] = list[i].name;
-    	child_ctx[10] = i;
+    	child_ctx[9] = list[i].name;
+    	child_ctx[11] = i;
     	return child_ctx;
     }
 
-    // (41:4) {#each displayMenu as { name }
+    // (35:4) {#each displayMenu as { name }
     function create_each_block(ctx) {
     	let div;
     	let h4;
-    	let t0_value = /*name*/ ctx[8] + "";
+    	let t0_value = /*name*/ ctx[9] + "";
     	let t0;
     	let t1;
     	let mounted;
     	let dispose;
 
     	function click_handler() {
-    		return /*click_handler*/ ctx[6](/*index*/ ctx[10]);
+    		return /*click_handler*/ ctx[6](/*index*/ ctx[11]);
+    	}
+
+    	function keypress_handler(...args) {
+    		return /*keypress_handler*/ ctx[7](/*index*/ ctx[11], ...args);
     	}
 
     	const block = {
@@ -380,10 +384,11 @@ var app = (function () {
     			h4 = element("h4");
     			t0 = text(t0_value);
     			t1 = space();
-    			attr_dev(h4, "class", "svelte-1e2y990");
-    			add_location(h4, file, 42, 12, 1453);
-    			attr_dev(div, "class", "oneMenu svelte-1e2y990");
-    			add_location(div, file, 41, 8, 1419);
+    			attr_dev(h4, "class", "svelte-1xv5pfv");
+    			add_location(h4, file, 47, 12, 1501);
+    			attr_dev(div, "class", "oneMenu svelte-1xv5pfv");
+    			attr_dev(div, "tabindex", /*index*/ ctx[11]);
+    			add_location(div, file, 35, 8, 1182);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -392,18 +397,22 @@ var app = (function () {
     			append_dev(div, t1);
 
     			if (!mounted) {
-    				dispose = listen_dev(h4, "click", click_handler, false, false, false);
+    				dispose = [
+    					listen_dev(div, "click", click_handler, false, false, false),
+    					listen_dev(div, "keypress", keypress_handler, false, false, false)
+    				];
+
     				mounted = true;
     			}
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*displayMenu*/ 2 && t0_value !== (t0_value = /*name*/ ctx[8] + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*displayMenu*/ 2 && t0_value !== (t0_value = /*name*/ ctx[9] + "")) set_data_dev(t0, t0_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
     			mounted = false;
-    			dispose();
+    			run_all(dispose);
     		}
     	};
 
@@ -411,7 +420,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(41:4) {#each displayMenu as { name }",
+    		source: "(35:4) {#each displayMenu as { name }",
     		ctx
     	});
 
@@ -449,20 +458,20 @@ var app = (function () {
 
     			t1 = space();
     			iframe = element("iframe");
-    			attr_dev(input, "placeholder", "find");
-    			attr_dev(input, "class", "svelte-1e2y990");
-    			add_location(input, file, 38, 8, 1310);
-    			attr_dev(div, "class", "inputDiv svelte-1e2y990");
-    			add_location(div, file, 37, 4, 1279);
+    			attr_dev(input, "placeholder", "find blocks");
+    			attr_dev(input, "class", "svelte-1xv5pfv");
+    			add_location(input, file, 32, 8, 1066);
+    			attr_dev(div, "class", "inputDiv svelte-1xv5pfv");
+    			add_location(div, file, 31, 4, 1035);
     			set_style(nav, "--globalColor", /*color*/ ctx[3]);
-    			attr_dev(nav, "class", "svelte-1e2y990");
-    			add_location(nav, file, 36, 0, 1238);
+    			attr_dev(nav, "class", "svelte-1xv5pfv");
+    			add_location(nav, file, 30, 0, 994);
     			attr_dev(iframe, "id", "iframe");
     			set_style(iframe, "--globalColor", /*color*/ ctx[3]);
     			attr_dev(iframe, "title", /*titleName*/ ctx[2]);
     			if (iframe.src !== (iframe_src_value = /*srcIframe*/ ctx[0])) attr_dev(iframe, "src", iframe_src_value);
-    			attr_dev(iframe, "class", "svelte-1e2y990");
-    			add_location(iframe, file, 52, 0, 1638);
+    			attr_dev(iframe, "class", "svelte-1xv5pfv");
+    			add_location(iframe, file, 53, 0, 1581);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -549,19 +558,9 @@ var app = (function () {
     	function changeMenu(index) {
     		allMenus[index];
     		const preloadLink = allMenus[index].preload;
-    		const newIframeSrc = allMenus[index].src;
-    		const ifrmElement = document.getElementById("iframe");
-    		let iframeWindow = ifrmElement.contentWindow;
-    		$$invalidate(0, srcIframe = newIframeSrc);
-    		const prealoadRequire = window.api.getBlock(preloadLink || "") || {};
-
-    		setTimeout(
-    			() => {
-    				iframeWindow.block = prealoadRequire;
-    				iframeWindow.global = window.api;
-    			},
-    			5
-    		);
+    		$$invalidate(0, srcIframe = allMenus[index].src);
+    		document.getElementById("iframe");
+    		window.block = window.api.getBlock(preloadLink || "") || {};
     	}
 
     	window.addEventListener("DOMContentLoaded", () => {
@@ -594,6 +593,12 @@ var app = (function () {
     		changeMenu(index);
     	};
 
+    	const keypress_handler = (index, event) => {
+    		if (event.key === "Enter") {
+    			changeMenu(index);
+    		}
+    	};
+
     	$$self.$capture_state = () => ({
     		titleName,
     		srcIframe,
@@ -615,7 +620,16 @@ var app = (function () {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [srcIframe, displayMenu, titleName, color, changeMenu, search, click_handler];
+    	return [
+    		srcIframe,
+    		displayMenu,
+    		titleName,
+    		color,
+    		changeMenu,
+    		search,
+    		click_handler,
+    		keypress_handler
+    	];
     }
 
     class App extends SvelteComponentDev {

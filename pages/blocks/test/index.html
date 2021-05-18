@@ -1,6 +1,10 @@
 <h1>Hello World !</h1>
+<h1>Hello World !</h1>
 <p></p>
 <script>
-    console.log(window.block);
-    document.getElementsByTagName("h1")[0].style.color = window.global.getColor();
+    console.log(window.parent.block);
+    try {
+        document.getElementsByTagName("h1")[0].style.color = window.global.getColor();
+    } catch (e) {}
+    document.getElementsByTagName("h1")[1].style.color = window.parent.api.getColor();
 </script>

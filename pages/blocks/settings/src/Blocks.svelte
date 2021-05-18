@@ -4,7 +4,7 @@
 <div>
     <button
         on:click={() => {
-            alert(window.block.osTEST());
+            alert(window.parent.block.osTEST());
         }}
     >
         click
