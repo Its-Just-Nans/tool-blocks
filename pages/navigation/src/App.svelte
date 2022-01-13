@@ -9,6 +9,7 @@
         const preloadLink = allMenus[index].preload;
         srcIframe = allMenus[index].src;
         const ifrmElement = document.getElementById("iframe");
+        console.log(`Navigated to ${menu.name}`);
         window.block = window.api.getBlock(preloadLink || "") || {};
     }
     window.addEventListener("DOMContentLoaded", () => {
@@ -51,7 +52,12 @@
         </div>
     {/each}
 </nav>
-<iframe id="iframe" style="--globalColor: {color}" title={titleName} src={srcIframe} />
+<iframe
+    id="iframe"
+    style="--globalColor: {color}"
+    title={titleName}
+    src={srcIframe}
+/>
 
 <style>
     :global(*) {

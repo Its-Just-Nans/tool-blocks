@@ -23,6 +23,7 @@
     "svelte-preprocess": "^4.0.0"
   },
   "dependencies": {
+    "adm-zip": "^0.5.5",
     "sirv-cli": "^1.0.0"
   },
   "block": {

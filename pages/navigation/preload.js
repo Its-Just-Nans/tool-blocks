@@ -1,8 +1,11 @@
 const fs = require("fs");
 const path = require("path");
 const { contextBridge } = require("electron");
+const Store = require("electron-store");
 
-(async () => {
+const store = new Store();
+
+const start = async () => {
     let allMenu = [];
 
     const blocksPath = path.join(__dirname, "../blocks");
@@ -70,10 +73,24 @@ const { contextBridge } = require("electron");
         getBlock: (preloadPath) => {
             if (preloadPath != "") {
                 if (!path.isAbsolute(preloadPath)) {
-                    preloadPath = path.resolve(__dirname, preloadPath);
+                    preloadPath = path.join(__dirname, preloadPath);
                 }
-                const preloadBlock = require(preloadPath);
-                return preloadBlock || {};
+                try {
+                    const preloadBlock = require(preloadPath);
+                    return preloadBlock || {};
+                } catch (error) {
+                    console.error(`Preload fail at ${preloadPath}`);
+                    console.error(error);
+                    return preloadBlock || {};
+                }
+            } else {
+                return {};
+            }
+        },
+        getBlockData: (name) => {
+            if (fs.existsSync(name)) {
+                const dataFromBlock = require(name);
+                return dataFromBlock || {};
             } else {
                 return {};
             }
@@ -82,4 +99,13 @@ const { contextBridge } = require("electron");
             return color;
         },
     });
-})();
+};
+
+store.set('unicorn', 'azerty');
+console.log(store.get('unicorn'));
+
+// Use dot-notation to access nested properties
+store.set('foo.bar', true);
+console.log(store.get('foo'));
+
+start();

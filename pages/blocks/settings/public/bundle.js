@@ -393,6 +393,8 @@ var app = (function () {
     function create_fragment$2(ctx) {
     	let div;
     	let button;
+    	let t1;
+    	let input;
     	let mounted;
     	let dispose;
 
@@ -401,8 +403,12 @@ var app = (function () {
     			div = element("div");
     			button = element("button");
     			button.textContent = "click";
-    			add_location(button, file$2, 4, 4, 34);
-    			add_location(div, file$2, 3, 0, 23);
+    			t1 = space();
+    			input = element("input");
+    			add_location(button, file$2, 15, 4, 394);
+    			attr_dev(input, "type", "file");
+    			add_location(input, file$2, 22, 4, 533);
+    			add_location(div, file$2, 14, 0, 383);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -410,9 +416,15 @@ var app = (function () {
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
     			append_dev(div, button);
+    			append_dev(div, t1);
+    			append_dev(div, input);
 
     			if (!mounted) {
-    				dispose = listen_dev(button, "click", /*click_handler*/ ctx[0], false, false, false);
+    				dispose = [
+    					listen_dev(button, "click", /*click_handler*/ ctx[0], false, false, false),
+    					listen_dev(input, "change", /*change_handler*/ ctx[1], false, false, false)
+    				];
+
     				mounted = true;
     			}
     		},
@@ -422,7 +434,7 @@ var app = (function () {
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
     			mounted = false;
-    			dispose();
+    			run_all(dispose);
     		}
     	};
 
@@ -437,7 +449,18 @@ var app = (function () {
     	return block;
     }
 
-    function instance$2($$self, $$props) {
+    async function installBlock(event) {
+    	if (event.target.files.length > 0) {
+    		const file = event.target.files[0];
+
+    		if (file) {
+    			const pathToFile = file.path;
+    			await window.parent.block.installBlock(pathToFile);
+    		}
+    	} // upload by link
+    }
+
+    function instance$2($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("Blocks", slots, []);
     	const writable_props = [];
@@ -450,7 +473,12 @@ var app = (function () {
     		alert(window.parent.block.osTEST());
     	};
 
-    	return [click_handler];
+    	const change_handler = async e => {
+    		await installBlock(e);
+    	};
+
+    	$$self.$capture_state = () => ({ installBlock });
+    	return [click_handler, change_handler];
     }
 
     class Blocks extends SvelteComponentDev {

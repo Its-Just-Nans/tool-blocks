@@ -3,8 +3,18 @@
 <p></p>
 <script>
     console.log(window.parent.block);
-    try {
-        document.getElementsByTagName("h1")[0].style.color = window.global.getColor();
-    } catch (e) {}
+    let obj = {
+        stdout: "",
+        stdin: "",
+    };
     document.getElementsByTagName("h1")[1].style.color = window.parent.api.getColor();
+    // const inter = setInterval(() => {
+    //     console.log(obj);
+    //     document.getElementsByTagName("p")[0].innerHTML = obj.stdout;
+    // }, 500);
+    (async () => {
+        const res = await window.parent.block.execSh("npm", ["i"], "./", obj);
+        console.log(res);
+        //clearInterval(inter);
+    })();
 </script>

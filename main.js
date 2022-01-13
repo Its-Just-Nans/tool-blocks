@@ -1,6 +1,8 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
+const Store = require("electron-store");
 
+const store = new Store();
 const appFolder = path.dirname(process.execPath);
 
 let win;
@@ -23,6 +25,10 @@ app.setLoginItemSettings({
 });
 
 app.whenReady().then(() => {
+    Store.initRenderer()
+
+    store.delete('unicorn');
+    console.log(store.get('unicorn'));
     createWindow();
     app.on("activate", () => {
         if (BrowserWindow.getAllWindows().length === 0) {
